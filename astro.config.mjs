@@ -53,7 +53,6 @@ function patchKatexFontDisplayPlugin() {
 // https://astro.build/config
 export default defineConfig({
 	site: siteUrl,
-	base: '/myBlog',
 	output: 'static',
 	integrations: [
 		mdx(),
