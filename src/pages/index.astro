@@ -1,0 +1,390 @@
+---
+import ContentCard from '../components/ContentCard.astro';
+import HeroHeader from '../components/HeroHeader.astro';
+import PageShell from '../layouts/PageShell.astro';
+import PostListItem from '../components/PostListItem.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import { heroConfig, locale, siteDescription, siteTitle } from '../config';
+import { getBlogPosts } from '../lib/content/blog';
+
+const posts = await getBlogPosts();
+const siteURL = Astro.site ?? Astro.url;
+const postCount = posts.length;
+const wordCount = posts.reduce((acc, post) => acc + (post.body ? post.body.length : 0), 0);
+const tagCount = new Set(posts.flatMap((post) => post.data.tags || [])).size;
+const sortedAscPosts = [...posts].sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+const startDate = postCount > 0 ? sortedAscPosts[0].data.pubDate : null;
+const recentPosts = posts.slice(0, 10);
+const hasPosts = postCount > 0;
+const homeHero = heroConfig.home;
+const webSiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': new URL('/#website', siteURL).toString(),
+  url: new URL('/', siteURL).toString(),
+  name: siteTitle,
+  description: siteDescription,
+  inLanguage: locale,
+};
+
+function formatWordCount(count: number) {
+  if (count > 10000) {
+    return `${(count / 10000).toFixed(2)} 万`;
+  }
+  return count.toString();
+}
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+---
+
+<PageShell
+  title={siteTitle}
+  description={siteDescription}
+  schema={webSiteSchema}
+  transparentHeader={true}
+  pageId="home"
+>
+  <style>
+      .stats-wrapper {
+        position: relative;
+        background-color: var(--color-bg);
+        min-height: 50vh;
+      }
+
+      .stats-container {
+        background: var(--color-surface);
+        border-radius: 16px;
+        box-shadow: var(--shadow-card);
+        padding: 2em;
+      }
+
+      .stats-container :global(.section-header) {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5em;
+        margin-bottom: 0.5em;
+      }
+
+      .stats-container :global(.section-number) {
+        font-size: 0.9em;
+        color: var(--color-text-muted);
+        font-weight: 500;
+      }
+
+      .stats-container :global(.section-title) {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin: 0;
+        color: var(--color-text);
+      }
+
+      .stats-container :global(.intro-text) {
+        color: var(--color-text-secondary);
+        margin-bottom: 2em;
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--color-border);
+        border: 1px solid var(--color-border);
+        margin-bottom: 2em;
+      }
+
+      .stat-item {
+        background: var(--color-surface);
+        padding: 2em;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .stat-item:hover {
+        transform: translateY(-5px);
+        z-index: 1;
+        box-shadow: var(--shadow-card-hover);
+      }
+
+      .stat-value {
+        font-size: 2em;
+        font-weight: bold;
+        color: var(--color-text-strong);
+        margin-bottom: 0.2rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .stat-label {
+        color: var(--color-text-secondary);
+        font-size: 0.9em;
+        font-weight: bold;
+      }
+
+      .blog-link {
+        display: block;
+        text-align: center;
+        color: var(--color-text);
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.9em;
+        transition: color 0.3s;
+      }
+
+      .blog-link:hover {
+        color: var(--accent);
+      }
+
+      .recent-posts-section {
+        margin-top: 3em;
+        padding-top: 2em;
+        border-top: 1px solid var(--color-border);
+      }
+
+      .home-posts-list.home-stagger-ready :global(.home-post-item) {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item) {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(1)) {
+        transition-delay: 0.1s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(2)) {
+        transition-delay: 0.2s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(3)) {
+        transition-delay: 0.3s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(4)) {
+        transition-delay: 0.4s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(5)) {
+        transition-delay: 0.5s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(6)) {
+        transition-delay: 0.6s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(7)) {
+        transition-delay: 0.7s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(8)) {
+        transition-delay: 0.8s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(9)) {
+        transition-delay: 0.9s;
+      }
+      .home-posts-list.home-stagger-ready.visible :global(.home-post-item:nth-child(10)) {
+        transition-delay: 1s;
+      }
+
+      .home-posts-list :global(.home-post-item) {
+        padding: 1.2em 0;
+        border-bottom: 1px solid var(--color-border-subtle);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out, background 0.2s;
+      }
+
+      .home-posts-list :global(.home-post-item:last-child) {
+        border-bottom: none;
+      }
+
+      .home-posts-list :global(.home-post-item:hover) {
+        background: var(--color-surface-elevated);
+        margin: 0 -1em;
+        padding-left: 1em;
+        padding-right: 1em;
+        border-radius: 8px;
+      }
+
+      .home-posts-list :global(.home-post-title) {
+        font-size: 1.2em;
+        font-weight: 600;
+        margin: 0 0 0.5em 0;
+      }
+
+      .home-posts-list :global(.home-post-title a) {
+        color: var(--color-text);
+        text-decoration: none;
+        display: inline;
+        background-image: linear-gradient(var(--accent), var(--accent));
+        background-position: 0% 100%;
+        background-repeat: no-repeat;
+        background-size: 0% 2px;
+        transition: background-size 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.3s ease;
+        padding-bottom: 2px;
+      }
+
+      .home-posts-list :global(.home-post-item:hover .home-post-title a) {
+        color: var(--accent);
+        background-size: 100% 2px;
+      }
+
+      .home-posts-list :global(.home-post-meta) {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        font-size: 0.85em;
+        color: var(--color-text-tertiary);
+        flex-wrap: wrap;
+      }
+
+      .home-posts-list :global(.home-post-meta-item) {
+        display: flex;
+        align-items: center;
+        gap: 0.3em;
+      }
+
+      .home-posts-list :global(.home-post-meta-item svg) {
+        width: 14px;
+        height: 14px;
+      }
+
+      .home-posts-list :global(.home-post-tags) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4em;
+      }
+
+      .home-posts-list :global(.home-tag-link) {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2em;
+        padding: 2px 8px;
+        background: var(--color-tag-bg);
+        color: var(--color-tag-text);
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.85em;
+        transition:
+          background-color 0.3s cubic-bezier(0.2, 0, 0, 1),
+          color 0.3s cubic-bezier(0.2, 0, 0, 1),
+          transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+          box-shadow 0.3s cubic-bezier(0.2, 0, 0, 1);
+        transform-origin: center;
+      }
+
+      .home-posts-list :global(.home-tag-link:hover) {
+        background: var(--accent);
+        color: white;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 3px 8px rgba(var(--accent-rgb), 0.25);
+      }
+
+      .home-posts-list :global(.home-tag-link:active) {
+        transform: translateY(0) scale(0.97);
+      }
+
+      .home-posts-list :global(.home-tag-link svg) {
+        width: 12px;
+        height: 12px;
+      }
+
+      .empty-state {
+        margin: 1.2em 0;
+        color: var(--color-text-secondary);
+        font-size: 0.95em;
+        line-height: 1.7;
+        text-align: center;
+        padding: 1.4em;
+        border: 1px dashed var(--color-border);
+        border-radius: 12px;
+        background: var(--color-surface-elevated);
+      }
+
+      @media (max-width: 720px) {
+        .hero-title {
+          font-size: 1.5em;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-container {
+          padding: 1.5em;
+          border-radius: 0;
+        }
+      }
+    </style>
+
+  <HeroHeader
+    text={homeHero.text}
+    subtitle={homeHero.subtitle}
+    backgroundImage={homeHero.backgroundImage}
+    interactive={true}
+  />
+
+  <div class="stats-wrapper">
+    <ContentCard id="stats-card">
+      <div class="stats-container">
+        <SectionHeader
+          number="01"
+          title="文章"
+          intro={hasPosts
+            ? `从 ${formatDate(startDate!)} 的第一篇文章开始，本站已经更新了......`
+            : '当前模板未附带文章内容，你可以在 src/content/blog/ 中添加 Markdown 文章后自动显示统计与列表。'}
+        />
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-value">{postCount} 篇</span>
+            <span class="stat-label">文章</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{formatWordCount(wordCount)}</span>
+            <span class="stat-label">字数</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value">{tagCount} 个</span>
+            <span class="stat-label">标签</span>
+          </div>
+        </div>
+
+        <div class="recent-posts-section">
+          <SectionHeader number="02" title="最近更新" intro={hasPosts ? '最新发布的 10 篇文章' : '暂无文章可展示'} />
+
+          {recentPosts.length > 0 ? (
+            <>
+              <div class="home-posts-list">
+                {recentPosts.map((post) => (
+                  <PostListItem
+                    post={post}
+                    titleTag="h3"
+                    articleClass="home-post-item"
+                    titleClass="home-post-title"
+                    showExcerpt={false}
+                    metaContainerClass="home-post-meta"
+                    metaItemClass="home-post-meta-item"
+                    metaTagsClass="home-post-tags"
+                    tagLinkClass="home-tag-link hover-scale"
+                    tagLimit={3}
+                  />
+                ))}
+              </div>
+              <a href="/blog" class="blog-link" style="margin-top: 1em;">查看全部文章 ⇗</a>
+            </>
+          ) : (
+            <p class="empty-state">
+              这里还没有文章。请在 <code>src/content/blog/</code> 新建 <code>.md</code> 或 <code>.mdx</code> 文件。
+            </p>
+          )}
+        </div>
+      </div>
+    </ContentCard>
+  </div>
+
+</PageShell>
