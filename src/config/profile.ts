@@ -4,7 +4,7 @@ import defaultAvatar from '../assets/profile.jpg';
 /**
  * Allowed social entry keys in profile configuration.
  */
-export type ProfileSocialKey = 'github' | 'x' | 'email' | 'website';
+export type ProfileSocialKey = 'github' | 'gitee' | 'csdn' | 'x' | 'email' | 'website';
 
 /**
  * One social link item rendered on `/about`.
@@ -55,15 +55,15 @@ export interface ProfileConfig {
 
 export const profileConfig: ProfileConfig = {
   avatar: defaultAvatar,
-  name: 'Your Name',
-  title: 'Your Role / Focus',
-  bio: 'Write a short self-introduction here. This content is used in About and article schema.',
-  location: 'Your City',
-  email: 'you@example.com',
-  githubProfileUrl: 'https://example.com',
+  name: 'Valexi',
+  title: 'C++后端开发',
+  bio: '热爱计算机，同时怕忘记自己的知识...',
+  location: '济南',
+  email: 'valexi.dev@gmail.com',
+  githubProfileUrl: 'https://github.com/Valexi-dev',
   socials: [
-    { key: 'github', label: 'GitHub', url: 'https://example.com' },
-    { key: 'x', label: 'X', url: 'https://example.com' },
-    { key: 'website', label: 'Website', url: 'https://example.com' },
+    { key: 'github', label: 'GitHub', url: 'https://github.com/Valexi-dev/' },
+    { key: 'gitee', label: 'Gitee', url: 'https://gitee.com/ValExi/' },
+    { key: 'csdn', label: 'CSDN', url: 'https://blog.csdn.net/suimingtao' },
   ],
 };

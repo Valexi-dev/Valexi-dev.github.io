@@ -34,13 +34,13 @@ export interface HeroConfig {
 
 export const heroConfig: HeroConfig = {
   home: {
-    text: 'Build your ideas, one post at a time.',
-    subtitle: 'A clean Astro theme with centralized configuration.',
+    text: 'Don\'t give up on yourdesire',
+    subtitle: '--Jacques Lacan',
     backgroundImage: defaultBackground.src,
   },
   blog: {
     text: 'All Posts',
-    subtitle: 'Browse your writing archive.',
+    subtitle: 'Browse all archive.',
     backgroundImage: defaultBackground.src,
   },
   tags: {
@@ -50,7 +50,7 @@ export const heroConfig: HeroConfig = {
   },
   about: {
     text: 'About',
-    subtitle: 'Introduce yourself and your work.',
+    subtitle: 'My account link',
     backgroundImage: defaultBackground.src,
   },
   postDefaultBackground: defaultBackground.src,
