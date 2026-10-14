@@ -1,0 +1,48 @@
+{
+  "name": "ulbo",
+  "description": "An Astro v6-ready configurable personal blog theme with SEO, search, tags, and Markdown content support.",
+  "type": "module",
+  "version": "0.2.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=9.6.5"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "build:astro": "astro build",
+    "deploy": "wrangler deploy",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "test": "vitest run",
+    "frontmatter:check": "node scripts/normalize-frontmatter.mjs --check",
+    "frontmatter:fix": "node scripts/normalize-frontmatter.mjs --write",
+    "optimize:images": "node scripts/optimize-blog-images.mjs",
+    "optimize:images:dry-run": "node scripts/optimize-blog-images.mjs --dry-run"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.2.1",
+    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^6.4.8",
+    "fuse.js": "^7.1.0",
+    "katex": "^0.16.28",
+    "mermaid": "^11.16.0",
+    "rehype-katex": "^7.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "sharp": "^0.34.3",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.7",
+    "wrangler": "4.110.0",
+    "yaml": "^2.9.0"
+  }
+}

@@ -1,0 +1,625 @@
+---
+import ArchiveCard from '../../components/ArchiveCard.astro';
+import DraftBadge from '../../components/DraftBadge.astro';
+import HeroHeader from '../../components/HeroHeader.astro';
+import PageShell from '../../layouts/PageShell.astro';
+import { heroConfig, siteTitle } from '../../config';
+import { getTagStats, getBlogPosts } from '../../lib/content/blog';
+import { getTagPath } from '../../lib/content/tag-path';
+import { extractExcerpt } from '../../lib/content/text';
+
+const sortedTags = await getTagStats();
+const posts = await getBlogPosts();
+const tagsHero = heroConfig.tags;
+---
+
+<PageShell
+  title={`标签 | ${siteTitle}`}
+  description="按标签及关键词浏览所有博客文章"
+  transparentHeader={true}
+  pageId="tags-index"
+  useMainWrapper={false}
+>
+    <style>
+      .tags-workspace {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding-top: 1rem;
+      }
+
+      /* Top Control Panel: Search & Filter Chips */
+      .tags-control-panel {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        padding: 1.5rem 1.8rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        box-shadow: 
+          0 10px 30px rgba(var(--shadow-color), 0.03),
+          inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+        transition: var(--theme-transition);
+      }
+
+      /* Search Bar */
+      .search-box-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        width: 100%;
+        max-width: 540px;
+        margin: 0 auto;
+      }
+
+      .search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 0.8rem 2.8rem 0.8rem 2.6rem;
+        border-radius: 12px;
+        border: 1px solid var(--color-border);
+        background: var(--color-surface-input);
+        color: var(--color-text);
+        font-size: 0.95rem;
+        outline: none;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        box-shadow: inset 0 1px 2px rgba(var(--shadow-color), 0.02);
+      }
+
+      .search-box input:focus {
+        border-color: var(--accent);
+        background: var(--color-surface);
+        box-shadow: 
+          0 0 0 3px rgba(var(--accent-rgb), 0.15),
+          0 4px 14px rgba(var(--accent-rgb), 0.08);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 0.9rem;
+        width: 1.15rem;
+        height: 1.15rem;
+        color: var(--color-text-tertiary);
+        pointer-events: none;
+        transition: color 0.3s;
+      }
+
+      .search-box input:focus + .search-icon {
+        color: var(--accent);
+      }
+
+      .clear-btn {
+        position: absolute;
+        right: 0.75rem;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border: none;
+        background: var(--color-surface-hover);
+        color: var(--color-text-muted);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+        padding: 0;
+      }
+
+      .clear-btn:hover {
+        background: var(--color-border);
+        color: var(--color-text);
+      }
+
+      .tag-search-status {
+        min-height: 1.1rem;
+        margin: 0;
+        text-align: center;
+        color: var(--color-text-muted);
+        font-size: 0.78rem;
+      }
+
+      /* Header info above tag chips */
+      .chips-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding-bottom: 0.6rem;
+      }
+
+      .chips-title {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--color-text-secondary);
+        letter-spacing: 0.5px;
+      }
+
+      .tags-count-badge {
+        font-size: 0.75rem;
+        color: var(--color-text-tertiary);
+        background: var(--color-surface-hover);
+        padding: 2px 9px;
+        border-radius: 20px;
+        border: 1px solid var(--color-border-subtle);
+      }
+
+      /* Filter Chips Bar (Weighted Tag Cloud) */
+      .tags-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        align-items: center;
+      }
+
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.85rem;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--color-surface-hover) 82%, transparent);
+        border: 1px solid var(--color-border-subtle);
+        color: var(--color-text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        line-height: 1.3;
+        transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .tag-pill:hover {
+        border-color: rgba(var(--accent-rgb), 0.4);
+        color: var(--accent) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.12);
+        background: var(--color-surface);
+      }
+
+      .tag-pill.active-tag {
+        color: white !important;
+        border-color: transparent;
+        background: linear-gradient(135deg, var(--accent), #7b8cff);
+        box-shadow: 
+          0 6px 18px -3px rgba(var(--accent-rgb), 0.35),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+      }
+
+      .tag-pill.active-tag .tag-hash,
+      .tag-pill.active-tag .tag-badge {
+        color: white;
+      }
+
+      .tag-pill.active-tag .tag-badge {
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .tag-hash {
+        color: var(--accent);
+        margin-right: 0.2rem;
+        font-weight: 700;
+        transition: color 0.25s;
+      }
+
+      .tag-name {
+        margin-right: 0.35rem;
+      }
+
+      .tag-name mark {
+        padding: 0 2px;
+        color: inherit;
+        background: color-mix(in srgb, var(--accent) 25%, transparent);
+        border-radius: 2px;
+      }
+
+      .tag-badge {
+        font-size: 0.72em;
+        background: rgba(var(--shadow-color), 0.05);
+        color: var(--color-text-muted);
+        padding: 1px 7px;
+        border-radius: 20px;
+        font-weight: 600;
+        transition: all 0.25s;
+      }
+
+      /* Articles Explorer */
+      .posts-explorer {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .explorer-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--color-border-subtle);
+        padding-bottom: 0.75rem;
+      }
+
+      .explorer-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--color-text);
+        transition: color 0.3s;
+      }
+
+      .posts-count-badge {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        font-weight: 500;
+      }
+
+      .article-search-status {
+        margin: 0.25rem 0 0;
+        color: var(--color-text-muted);
+        font-size: 0.8rem;
+        line-height: 1.2;
+      }
+
+      .tag-posts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .post-card-wrapper {
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      /* Matches the blog archive pagination. */
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 3em;
+        padding-top: 2em;
+        border-top: 1px solid var(--color-border);
+        gap: 1em;
+      }
+
+      .page-numbers { display: flex; align-items: center; gap: 0.5em; transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1); }
+      .pagination:hover .page-numbers { transform: scale(1.02); }
+      .page-btn {
+        display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+        border-radius: 8px; background: transparent; color: var(--color-text-secondary); text-decoration: none;
+        font-weight: 500; font-size: 0.95em; border: 1px solid transparent; position: relative; overflow: hidden;
+        transform-origin: center; cursor: pointer;
+        transition: color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1), background-color 0.3s cubic-bezier(0.05, 0.7, 0.1, 1), transform 0.3s cubic-bezier(0.05, 0.7, 0.1, 1), box-shadow 0.3s cubic-bezier(0.05, 0.7, 0.1, 1);
+      }
+      .page-btn::after { content: ''; position: absolute; inset: 0; background: var(--accent); opacity: 0; border-radius: inherit; transform: scale(0); transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s cubic-bezier(0.05, 0.7, 0.1, 1); }
+      .page-btn:hover:not(.disabled):not(.active)::after { transform: scale(1); opacity: 0.06; }
+      .page-btn:hover:not(.disabled):not(.active) { color: var(--accent); transform: translateY(-3px) scale(1.05); }
+      .page-btn.active { background: var(--accent); color: white; font-weight: 600; box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.35); transform: scale(1.08); }
+      .page-btn.disabled { opacity: 0.25; cursor: not-allowed; pointer-events: none; }
+      .page-ellipsis { color: var(--color-text-muted); padding: 0 0.15em; }
+
+      /* Premium Card Look */
+      .tag-post-item {
+        padding: 1.5rem 1.8rem;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .tag-post-item::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(to bottom, var(--accent), #a1c4fd);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .tag-post-item:hover {
+        background: var(--color-surface-hover);
+        transform: translateY(-2px);
+        box-shadow: 
+          0 10px 24px rgba(var(--shadow-color), 0.05),
+          0 4px 8px rgba(var(--shadow-color), 0.03);
+        border-color: rgba(var(--accent-rgb), 0.2);
+      }
+
+      .tag-post-item:hover::before {
+        opacity: 1;
+      }
+
+      .tag-post-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 0.5rem 0;
+        line-height: 1.4;
+      }
+
+      .tag-post-title a {
+        color: var(--color-text-strong);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .tag-post-title a:hover {
+        color: var(--accent);
+      }
+
+      :global(.tag-post-item .search-highlight) {
+        color: var(--color-search-highlight-text);
+        background: var(--color-search-highlight-bg);
+        border-radius: 2px;
+        padding: 0 2px;
+      }
+
+      .tag-post-excerpt {
+        color: var(--color-text-secondary);
+        font-size: 0.92rem;
+        line-height: 1.6;
+        margin: 0 0 1rem 0;
+      }
+
+      .tag-post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.2rem;
+        font-size: 0.82rem;
+        color: var(--color-text-tertiary);
+        border-top: 1px solid var(--color-border-subtle);
+        padding-top: 0.8rem;
+      }
+
+      .tag-meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: color 0.2s;
+      }
+
+      .tag-meta-item:hover {
+        color: var(--color-text-secondary);
+      }
+
+      .tag-meta-item svg {
+        width: 14px;
+        height: 14px;
+        opacity: 0.75;
+      }
+
+      .post-item-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-left: auto;
+      }
+
+      .post-item-tag-badge {
+        font-size: 0.7rem;
+        background: var(--color-surface-input);
+        border: 1px solid var(--color-border);
+        padding: 2px 8px;
+        border-radius: 20px;
+        color: var(--color-text-secondary);
+        transition: all 0.25s;
+      }
+
+      .post-item-tag-badge:hover {
+        color: var(--accent);
+        border-color: rgba(var(--accent-rgb), 0.3);
+      }
+
+      /* Empty State */
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        background: var(--color-surface);
+        border: 1px dashed var(--color-border);
+        border-radius: 16px;
+        color: var(--color-text-secondary);
+        gap: 1rem;
+      }
+
+      .empty-state svg {
+        color: var(--color-text-muted);
+        opacity: 0.6;
+      }
+
+      .empty-state p {
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      @media (max-width: 720px) {
+        .tags-control-panel {
+          padding: 1.2rem 1rem;
+          border-radius: 12px;
+        }
+        
+        .tag-post-item {
+          padding: 1.2rem;
+          border-radius: 12px;
+        }
+
+        .post-item-tags {
+          width: 100%;
+          margin-left: 0;
+          margin-top: 0.4rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .pagination { gap: 0.5em; justify-content: flex-start; overflow-x: auto; padding-bottom: 0.4em; }
+        .page-numbers { gap: 0.2em; flex-shrink: 0; }
+        .page-btn { width: 32px; height: 32px; font-size: 0.85em; }
+      }
+    </style>
+
+  <HeroHeader
+    text={tagsHero.text}
+    subtitle={tagsHero.subtitle}
+    backgroundImage={tagsHero.backgroundImage}
+    compact={true}
+  />
+
+  <ArchiveCard
+    number="Tags"
+    title="标签与内容分类"
+    intro="选择你感兴趣的主题，或在上方检索关键字，实时筛选归档文章。"
+    minHeight={true}
+  >
+    {sortedTags.length > 0 ? (
+      <div class="tags-workspace">
+        {/* Centralized Search & Filter Panel */}
+        <div class="tags-control-panel">
+          <div class="search-box-wrapper">
+            <div class="search-box">
+              <input type="text" id="tag-search" placeholder="搜索主题标签或文章内容..." autocomplete="off" />
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <button id="clear-search" class="clear-btn" aria-label="清除搜索">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <p id="tag-search-status" class="tag-search-status" aria-live="polite"></p>
+          </div>
+
+          <div class="chips-header">
+            <span class="chips-title">主题切牌筛选</span>
+            <span class="tags-count-badge">共 {sortedTags.length} 个标签</span>
+          </div>
+
+          <div class="tags-cloud">
+            <a 
+              href="/tags/"
+              class="tag-pill active-tag" 
+              data-tag="all"
+              style="font-size: 0.95rem;"
+            >
+              <span class="tag-name">全部文章</span>
+              <span class="tag-badge">{posts.length}</span>
+            </a>
+
+            {sortedTags.map(([tag, count]) => {
+              const maxCount = sortedTags[0] ? sortedTags[0][1] : 1;
+              const ratio = count / maxCount;
+              // Size weight: from 0.85rem to 1.1rem
+              const fontSize = 0.85 + ratio * 0.25;
+              
+              return (
+                <a 
+                  href={getTagPath(tag)}
+                  class="tag-pill" 
+                  data-tag={tag}
+                  data-count={count}
+                  style={`font-size: ${fontSize}rem;`}
+                >
+                  <span class="tag-hash">#</span>
+                  <span class="tag-name">{tag}</span>
+                  <span class="tag-badge">{count}</span>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Dynamic Explorer */}
+        <section class="posts-explorer">
+          <div class="explorer-header">
+            <h3 class="explorer-title" id="active-tag-title">所有文章</h3>
+            <span class="posts-count-badge" id="active-posts-count">共 {posts.length} 篇</span>
+          </div>
+          <p id="article-search-status" class="article-search-status" aria-live="polite"></p>
+
+          <div class="tag-posts-list" id="posts-list">
+            {posts.map((post) => {
+              const excerpt = extractExcerpt(post.body || '', 160);
+              return (
+                <div 
+                  class="post-card-wrapper" 
+                  data-post-id={post.id}
+                  data-tags={post.data.tags.join(',')}
+                >
+                  <article class="tag-post-item">
+                    <h4 class="tag-post-title">
+                      <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+                      <DraftBadge draft={post.data.draft} />
+                    </h4>
+                    {excerpt && <p class="tag-post-excerpt">{excerpt}</p>}
+                    
+                    <div class="tag-post-meta">
+                      <span class="tag-meta-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                          <line x1="16" y1="2" x2="16" y2="6"></line>
+                          <line x1="8" y1="2" x2="8" y2="6"></line>
+                          <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        {post.data.pubDate.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      </span>
+                      
+                      {post.data.categories && post.data.categories.length > 0 && (
+                        <span class="tag-meta-item">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                          </svg>
+                          {post.data.categories.join(', ')}
+                        </span>
+                      )}
+                      
+                      <div class="post-item-tags">
+                        {post.data.tags.map((t: string) => (
+                          <span class="post-item-tag-badge">#{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              );
+            })}
+          </div>
+
+          <nav id="tag-pagination" class="pagination" aria-label="文章分页" hidden>
+            <button id="tag-prev-page" type="button" class="page-btn prev-btn" aria-label="上一页">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+            </button>
+            <div id="tag-page-numbers" class="page-numbers"></div>
+            <button id="tag-next-page" type="button" class="page-btn next-btn" aria-label="下一页">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6" /></svg>
+            </button>
+          </nav>
+
+          <div id="empty-state" class="empty-state" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            <p id="empty-state-message">没有找到与搜索或选择匹配的文章</p>
+          </div>
+        </section>
+      </div>
+    ) : (
+      <p style="text-align: center; color: var(--color-text-secondary); padding: 3rem;">暂无标签</p>
+    )}
+  </ArchiveCard>
+
+</PageShell>
