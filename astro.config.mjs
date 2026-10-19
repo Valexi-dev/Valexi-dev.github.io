@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 import remarkBlockquoteLineBreaks from './src/plugins/remark-blockquote-line-breaks.mjs';
 import remarkHexoImages from './src/plugins/remark-hexo-images.mjs';
+import remarkHighlight from './src/plugins/remark-highlight';
 import remarkSearchBlocks from './src/plugins/remark-search-blocks';
 import remarkMath from 'remark-math';
 import rehypeImageCaptions from './src/plugins/rehype-image-captions.mjs';
@@ -70,7 +71,13 @@ export default defineConfig({
 		defaultStrategy: 'hover',
 	},
 	markdown: {
-		remarkPlugins: [remarkHexoImages, remarkMath, remarkBlockquoteLineBreaks, remarkSearchBlocks],
+		remarkPlugins: [
+			remarkHexoImages,
+			remarkMath,
+			remarkBlockquoteLineBreaks,
+			remarkHighlight,
+			remarkSearchBlocks,
+		],
 		rehypePlugins: [rehypeKatex, rehypeLazyImages, rehypeImageCaptions, rehypeResponsiveTables],
 		shikiConfig: {
 			themes: {

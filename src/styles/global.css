@@ -98,6 +98,7 @@
 	--color-search-result-hover: #f8f9fa;
 	--color-search-highlight-text: #e53e3e;
 	--color-search-highlight-bg: rgba(229, 62, 62, 0.1);
+	--color-mark-bg: #fff0a8;
 
 	/* Scrollbar */
 	--color-scrollbar: rgba(153, 153, 153, 0.4);
@@ -185,6 +186,7 @@
 	--color-search-result-hover: #22263a;
 	--color-search-highlight-text: #f87171;
 	--color-search-highlight-bg: rgba(248, 113, 113, 0.15);
+	--color-mark-bg: #66551f;
 
 	/* Scrollbar */
 	--color-scrollbar: rgba(200, 200, 200, 0.15);
@@ -402,6 +404,13 @@ p {
 
 .prose p {
 	margin-bottom: 1.4rem;
+}
+
+.prose mark {
+	background-color: var(--color-mark-bg);
+	color: inherit;
+	border-radius: 0.2em;
+	padding: 0.05em 0.18em;
 }
 
 .prose ul,
