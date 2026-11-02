@@ -13,7 +13,7 @@ $graphics.Clear([System.Drawing.Color]::White)
 try {
   $coveredUntil = 0
   for ($index = 0; $index -lt $meta.tops.Count; $index++) {
-    $sourcePath = Join-Path $SegmentDirectory (('{0:d2}.png' -f $index))
+    $sourcePath = Join-Path $SegmentDirectory (('{0:d2}.webp' -f $index))
     $source = [System.Drawing.Image]::FromFile($sourcePath)
     try {
       $top = [int]$meta.tops[$index]

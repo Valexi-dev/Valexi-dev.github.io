@@ -22,7 +22,7 @@
   <a href="https://github.com/xxy1103/ulbo_vscode">VS Code 文章管理工具</a>
 </p>
 
-![ulBo Astro Theme 总览](./docs/images/promo/ulbo-overview.png)
+![ulBo Astro Theme 总览](./docs/images/promo/ulbo-overview.webp)
 
 ## 为什么选择 ulBo
 
@@ -41,8 +41,8 @@ ulBo 面向希望长期维护个人内容的写作者、开发者和独立创作
 
 <table>
   <tr>
-    <td width="50%"><img src="./docs/images/promo/ulbo-light-dark.png" alt="ulBo 明暗主题"></td>
-    <td width="50%"><img src="./docs/images/promo/ulbo-longform.png" alt="ulBo 长文阅读"></td>
+    <td width="50%"><img src="./docs/images/promo/ulbo-light-dark.webp" alt="ulBo 明暗主题"></td>
+    <td width="50%"><img src="./docs/images/promo/ulbo-longform.webp" alt="ulBo 长文阅读"></td>
   </tr>
   <tr>
     <td align="center"><strong>一致的明暗主题体验</strong></td>
@@ -50,7 +50,7 @@ ulBo 面向希望长期维护个人内容的写作者、开发者和独立创作
   </tr>
 </table>
 
-![ulBo 搜索、标签、归档与 About 页面](./docs/images/promo/ulbo-content.png)
+![ulBo 搜索、标签、归档与 About 页面](./docs/images/promo/ulbo-content.webp)
 
 ## 快速开始
 

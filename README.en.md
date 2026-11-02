@@ -22,7 +22,7 @@
   <a href="https://github.com/xxy1103/ulbo_vscode">VS Code Article Manager</a>
 </p>
 
-![ulBo Astro Theme overview](./docs/images/promo/ulbo-overview.png)
+![ulBo Astro Theme overview](./docs/images/promo/ulbo-overview.webp)
 
 ## Why ulBo
 
@@ -41,8 +41,8 @@ ulBo is designed for writers, developers, and independent creators who want a pe
 
 <table>
   <tr>
-    <td width="50%"><img src="./docs/images/promo/ulbo-light-dark.png" alt="ulBo light and dark themes"></td>
-    <td width="50%"><img src="./docs/images/promo/ulbo-longform.png" alt="ulBo long-form reading experience"></td>
+    <td width="50%"><img src="./docs/images/promo/ulbo-light-dark.webp" alt="ulBo light and dark themes"></td>
+    <td width="50%"><img src="./docs/images/promo/ulbo-longform.webp" alt="ulBo long-form reading experience"></td>
   </tr>
   <tr>
     <td align="center"><strong>Consistent light and dark experiences</strong></td>
@@ -50,7 +50,7 @@ ulBo is designed for writers, developers, and independent creators who want a pe
   </tr>
 </table>
 
-![ulBo search, tags, archives, and About page](./docs/images/promo/ulbo-content.png)
+![ulBo search, tags, archives, and About page](./docs/images/promo/ulbo-content.webp)
 
 ## Optional VS Code Writing Companion
 
