@@ -1,0 +1,17 @@
+project:
+  uuid: 56fa882e-1939-4591-aa56-49da7ed554c1
+  slug: valexi-dev.github.io
+  node_id: aa583feb39f2
+  build_id: f4985177-8166-5d2e-927c-94dc101606ed
+mission_type_activations:
+- software-dev
+- documentation
+- research
+- plan
+vcs:
+  type: git
+agents:
+  available:
+  - copilot
+  auto_commit: true
+  lint_on_edit: false
