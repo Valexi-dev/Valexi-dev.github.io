@@ -1,0 +1,80 @@
+{
+  "event_count": 19,
+  "last_event_id": "01M6DB7SB5WTRJK1P36DRTDMP3",
+  "materialized_at": "2026-11-02T05:20:43.365077+00:00",
+  "mission_number": "",
+  "mission_slug": "article-cover-image-01M6D46H",
+  "mission_type": "software-dev",
+  "summary": {
+    "approved": 0,
+    "blocked": 0,
+    "canceled": 0,
+    "claimed": 0,
+    "done": 2,
+    "for_review": 0,
+    "in_progress": 0,
+    "in_review": 0,
+    "planned": 0
+  },
+  "work_packages": {
+    "WP01": {
+      "actor": "merge",
+      "agent": "copilot",
+      "agent_profile": "__resolved_profile_absent__",
+      "agent_profile_version": "__resolved_profile_version_absent__",
+      "force_count": 1,
+      "lane": "done",
+      "last_event_id": "01M6DB7R0QGM4H91K03DERJX4K",
+      "last_transition_at": "2026-11-02T05:20:42.008037+00:00",
+      "model": "__resolved_model_absent__",
+      "notes": [
+        "WP01 schema tests pass; existing content validator reports unrelated ces frontmatter drift",
+        "Added assertions covering documented optional field, example, fallback and prohibited legacy names; 20 targeted tests pass",
+        "Review passed: schema validation, 20 focused tests, documentation contract assertions, and Frontmatter standard satisfy WP01"
+      ],
+      "provider": "__resolved_provider_absent__",
+      "review": null,
+      "review_result": {
+        "reference": "Review passed: schema validation, 20 focused tests, documentation contract assertions, and Frontmatter standard satisfy WP01",
+        "reviewer": "Valexi",
+        "verdict": "approved"
+      },
+      "role": "reviewer",
+      "shell_pid": 873,
+      "shell_pid_created_at": "1793594543.39",
+      "subtasks": {
+        "T001": "done",
+        "T002": "done",
+        "T003": "done"
+      }
+    },
+    "WP02": {
+      "actor": "merge",
+      "agent": "copilot",
+      "agent_profile": "__resolved_profile_absent__",
+      "agent_profile_version": "__resolved_profile_version_absent__",
+      "force_count": 0,
+      "lane": "done",
+      "last_event_id": "01M6DB7SB5WTRJK1P36DRTDMP3",
+      "last_transition_at": "2026-11-02T05:20:43.365077+00:00",
+      "model": "__resolved_model_absent__",
+      "notes": [
+        "Astro check and production build pass; temporary fixture confirms custom Hero/preload and unchanged default social/JSON-LD images",
+        "Review passed: generated HTML assertions verify configured Hero/preload, default fallback and unchanged OG/Twitter/JSON-LD images; astro check and build pass"
+      ],
+      "provider": "__resolved_provider_absent__",
+      "review_result": {
+        "reference": "Review passed: generated HTML assertions verify configured Hero/preload, default fallback and unchanged OG/Twitter/JSON-LD images; astro check and build pass",
+        "reviewer": "Valexi",
+        "verdict": "approved"
+      },
+      "role": "reviewer",
+      "shell_pid": 873,
+      "shell_pid_created_at": "1793594543.39",
+      "subtasks": {
+        "T004": "done",
+        "T005": "done"
+      }
+    }
+  }
+}

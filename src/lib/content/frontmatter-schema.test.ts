@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { blogFrontmatterSchema } from './frontmatter-schema';
 
@@ -13,8 +14,55 @@ describe('blogFrontmatterSchema', () => {
 		const result = blogFrontmatterSchema.parse(validPost);
 
 		expect(result.draft).toBe(false);
+		expect(result.coverImage).toBeUndefined();
 		expect(result.pubDate).toBeInstanceOf(Date);
 		expect(result.updatedDate).toBeUndefined();
+	});
+
+	it.each([
+		'https://images.example.com/article-cover.webp',
+		'HTTPS://images.example.com/article-cover.webp',
+		'/image/article-cover.webp',
+	])(
+		'accepts a supported cover image reference: %s',
+		(coverImage) => {
+			const result = blogFrontmatterSchema.parse({ ...validPost, coverImage });
+
+			expect(result.coverImage).toBe(coverImage);
+		},
+	);
+
+	it('trims whitespace around a cover image reference', () => {
+		const result = blogFrontmatterSchema.parse({
+			...validPost,
+			coverImage: '  /image/article-cover.webp  ',
+		});
+
+		expect(result.coverImage).toBe('/image/article-cover.webp');
+	});
+
+	it('documents the optional cover image contract', () => {
+		const standard = readFileSync(new URL('../../../standard/frontmatter.md', import.meta.url), 'utf8');
+
+		expect(standard).toContain('| `coverImage` | 字符串 | 否 |');
+		expect(standard).toContain('coverImage: "/image/article-cover.webp"');
+		expect(standard).toContain('postDefaultBackground');
+		expect(standard).toContain('- `heroImage`');
+		expect(standard).toContain('- `cover`');
+	});
+
+	it.each([
+		'',
+		'   ',
+		'http://images.example.com/article-cover.webp',
+		'image/article-cover.webp',
+		'//images.example.com/article-cover.webp',
+		'https://',
+		'/\\images.example.com/article-cover.webp',
+	])('rejects an unsupported cover image reference: %s', (coverImage) => {
+		const result = blogFrontmatterSchema.safeParse({ ...validPost, coverImage });
+
+		expect(result.success).toBe(false);
 	});
 
 	it('allows a draft to have no category or tags', () => {

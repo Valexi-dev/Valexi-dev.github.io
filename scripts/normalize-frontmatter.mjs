@@ -234,6 +234,7 @@ function normalizeDocument(parsed, relativePath) {
 		'updated',
 		'updatedDate',
 		'description',
+		'coverImage',
 		'draft',
 		'categories',
 		'tags',
@@ -252,6 +253,7 @@ function normalizeDocument(parsed, relativePath) {
 		updated:
 			updatedSource === undefined ? undefined : normalizeDate(updatedSource, 'updated', relativePath),
 		description,
+		...(parsed.coverImage === undefined ? {} : { coverImage: parsed.coverImage }),
 		draft,
 		categories,
 		tags,

@@ -1,0 +1,16 @@
+schema_version: "1.0.0"
+mission: software-dev
+profile: minimal
+answers:
+  project_intent: "这是个人技术博客/静态内容站点，优先保障文章可读性、可维护性与稳定发布；治理适用于后续变更，不追溯改写已完成的 mission。"
+  languages_frameworks: "Astro 6、TypeScript、Node.js 22.12+、Vitest；部署目标为 GitHub Pages。"
+  testing_requirements: "变更应运行与改动相关的测试；常规代码变更运行 npm test 与 npm run check；影响页面渲染、内容集合或静态输出时运行 npm run build。不设覆盖率硬阈值。"
+  quality_gates: "受影响测试通过；Astro check 无错误；涉及内容或页面输出时生产构建通过。不得把已知存在基线漂移的 frontmatter:check 当作本次任务的唯一验收依据。"
+  review_policy: "在 feature 分支实现；合入 main 前至少进行一次独立审查或由用户明确批准；未经明确请求不推送分支、不执行部署。"
+  performance_targets: "优先保持静态生成；新增功能避免无必要的客户端 JavaScript 和运行时网络请求；暂不设数值性能阈值，具体任务另行明确。"
+  deployment_constraints: "使用 GitHub Pages 静态部署；生产凭据不得进入仓库；发布前运行生产构建；未经明确授权不操作生产部署。"
+selected_paradigms: []
+selected_directives: []
+available_tools:
+  - spec-kitty
+  - git

@@ -14,6 +14,7 @@ title: "ulbo VS Code 文章管理插件设计"
 date: "2026-07-29T14:30:00+08:00"
 updated: "2026-07-29T18:00:00+08:00"
 description: "介绍 ulbo 文章管理插件的产品设计、工作流程与技术架构。"
+coverImage: "/image/article-cover.webp"
 draft: false
 categories:
   - "项目"
@@ -52,9 +53,10 @@ tags: []
 2. `date`
 3. `updated`
 4. `description`
-5. `draft`
-6. `categories`
-7. `tags`
+5. `coverImage`
+6. `draft`
+7. `categories`
+8. `tags`
 
 可选字段没有值时必须省略，不得写成空字符串或 `null`。
 
@@ -66,6 +68,7 @@ tags: []
 | `date` | 日期字符串 | 是 | 带 `+08:00` 时区的 ISO 8601 格式 |
 | `updated` | 日期字符串 | 否 | 与 `date` 格式相同，只在实质更新时写入 |
 | `description` | 字符串 | 否 | 去除首尾空格后不得为空，建议 40–160 字 |
+| `coverImage` | 字符串 | 否 | HTTPS 绝对 URL 或以单个 `/` 开头的站点根路径；不得为空，不支持 HTTP URL、协议相对 URL 或其他相对路径 |
 | `draft` | 布尔值 | 否 | 缺省为 `false`，不得使用字符串表示 |
 | `categories` | 字符串数组 | 是 | 正式文章恰好一个；草稿允许为空 |
 | `tags` | 字符串数组 | 是 | 正式文章至少一个；草稿允许为空；不得重复 |
@@ -146,7 +149,7 @@ date: "2026-07-29T14:30:00+08:00"
 
 页面层可以派生 `pubDate = date` 和 `updatedDate = updated`，但不得写回 YAML。
 
-文章不设置 `heroImage`，所有文章页使用主题配置中的 `postDefaultBackground`。
+文章使用 `coverImage` 指定可选封面图；未配置时文章详情页继续使用主题配置中的 `postDefaultBackground`。`heroImage` 和 `cover` 不得用于文章 Frontmatter。
 
 ## 9. 新文章模板
 

@@ -27,6 +27,7 @@ interface Props extends BlogPostData {
 const {
 	title,
 	description,
+	coverImage,
 	pubDate,
 	updatedDate,
 	categories,
@@ -42,9 +43,9 @@ const metaDescription = (seoDescription || description || title).trim();
 const siteURL = Astro.site ?? Astro.url;
 const canonicalURL = new URL(Astro.url.pathname, siteURL).toString();
 
-// 严格文章契约统一使用配置中的默认背景图。
+// 未配置文章封面时使用主题默认背景图。
 const defaultHeroImage = heroConfig.postDefaultBackground;
-const displayHeroImageSrc = defaultHeroImage;
+const displayHeroImageSrc = coverImage ?? defaultHeroImage;
 const articleSection =
 	Array.isArray(categories) && categories.length > 0
 		? categories[0]
@@ -73,7 +74,7 @@ const articleSchema = {
 		name: authorName,
 		url: authorUrl,
 	},
-	image: [new URL(displayHeroImageSrc, siteURL).toString()],
+	image: [new URL(defaultHeroImage, siteURL).toString()],
 	inLanguage: locale,
 	...(articleTags.length > 0 ? { keywords: articleTags.join(', ') } : {}),
 };
@@ -893,4 +894,3 @@ const articleSchema = {
 		</script>
 	</Fragment>
 </PageShell>
-
