@@ -13,5 +13,6 @@ vcs:
 agents:
   available:
   - copilot
-  auto_commit: true
+  auto_commit: false
   lint_on_edit: false
+charter: .kittify/charter/charter.yaml

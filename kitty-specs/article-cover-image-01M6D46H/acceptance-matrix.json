@@ -1,0 +1,59 @@
+{
+  "mission_slug": "article-cover-image-01M6D46H",
+  "mission_number": "",
+  "mission_type": "software-dev",
+  "overall_verdict": "pass",
+  "criteria": [
+    {
+      "criterion_id": "FR-001",
+      "description": "Frontmatter schema accepts an omitted coverImage, HTTPS URLs, and site-root paths; it rejects blank values, HTTP URLs, and other relative paths.",
+      "proof_type": "automated_test",
+      "evidence": "npx vitest run src/lib/content/frontmatter-schema.test.ts: 20 tests passed",
+      "pass_fail": "pass",
+      "verified_by": "copilot",
+      "verified_at": "2026-11-02T05:18:38.135631+00:00",
+      "notes": "Verify with frontmatter schema tests; no network availability check is required."
+    },
+    {
+      "criterion_id": "FR-002",
+      "description": "An article configured with coverImage renders that image as the article detail page Hero background and preload image.",
+      "proof_type": "automated_test",
+      "evidence": "Temporary fixture static-build assertion verified custom Hero background and preload use coverImage",
+      "pass_fail": "pass",
+      "verified_by": "copilot",
+      "verified_at": "2026-11-02T05:18:45.415384+00:00",
+      "notes": "Verify generated static HTML for an article configured with a valid coverImage."
+    },
+    {
+      "criterion_id": "FR-003",
+      "description": "An article without coverImage renders heroConfig.postDefaultBackground as both the article detail page Hero background and preload image.",
+      "proof_type": "automated_test",
+      "evidence": "Temporary fixture and existing article static-build assertions verified the configured and default Hero/preload paths",
+      "pass_fail": "pass",
+      "verified_by": "copilot",
+      "verified_at": "2026-11-02T05:18:53.544592+00:00",
+      "notes": "Verify generated static HTML for an existing article without coverImage."
+    },
+    {
+      "criterion_id": "FR-004",
+      "description": "All existing articles without coverImage pass schema validation and the production static-site build without Frontmatter migration.",
+      "proof_type": "automated_test",
+      "evidence": "npm run build completed with 28 static pages; no existing article Frontmatter modified",
+      "pass_fail": "pass",
+      "verified_by": "copilot",
+      "verified_at": "2026-11-02T05:19:00.553248+00:00",
+      "notes": "Verify with npm run build and confirm no existing article Frontmatter requires modification."
+    },
+    {
+      "criterion_id": "FR-005",
+      "description": "The Frontmatter standard documents coverImage as optional, shows a supported image-reference example, and retains legacy cover-field prohibitions.",
+      "proof_type": "automated_test",
+      "evidence": "Frontmatter standard assertions in frontmatter-schema.test.ts passed with the 20-test suite",
+      "pass_fail": "pass",
+      "verified_by": "copilot",
+      "verified_at": "2026-11-02T05:19:07.901123+00:00",
+      "notes": "Verify the updated standard/frontmatter.md content."
+    }
+  ],
+  "negative_invariants": []
+}

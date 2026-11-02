@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "mission_slug": "article-cover-image-01M6D46H",
+  "mission_id": "01M6D46HQ234PMJ9MP032GM3F7",
+  "mission_branch": "kitty/mission-article-cover-image-01M6D46H",
+  "target_branch": "feature/article-cover-image",
+  "lanes": [
+    {
+      "lane_id": "lane-a",
+      "wp_ids": [
+        "WP01"
+      ],
+      "write_scope": [
+        "src/lib/content/frontmatter-schema.test.ts",
+        "src/lib/content/frontmatter-schema.ts",
+        "standard/frontmatter.md"
+      ],
+      "predicted_surfaces": [],
+      "depends_on_lanes": [],
+      "parallel_group": 0
+    },
+    {
+      "lane_id": "lane-b",
+      "wp_ids": [
+        "WP02"
+      ],
+      "write_scope": [
+        "src/layouts/BlogPost.astro"
+      ],
+      "predicted_surfaces": [
+        "app-shell"
+      ],
+      "depends_on_lanes": [
+        "lane-a"
+      ],
+      "parallel_group": 1
+    }
+  ],
+  "computed_at": "2026-11-02T03:28:29.483781+00:00",
+  "computed_from": "dependency_graph+ownership",
+  "planning_artifact_wps": [],
+  "planning_commit_sha": "14a147ab9c71c173e289a0fdd010223d9921e9b6"
+}
