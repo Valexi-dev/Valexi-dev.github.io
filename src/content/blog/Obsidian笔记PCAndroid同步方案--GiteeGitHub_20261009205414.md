@@ -1,7 +1,7 @@
 ---
 title: "Obsidian笔记PC/Android同步方案--Gitee/GitHub"
 date: "2026-10-09T20:54:14+08:00"
-updated: "2026-10-09T20:59:01+08:00"
+updated: "2026-11-23T16:00:24+08:00"
 description: "本文介绍了如何使用Gitee作为云服务同步方案，详细讲解了在PC和Android设备上配置Obsidian与Git的步骤，帮助用户实现高效的笔记管理与数据备份。"
 draft: false
 categories:
@@ -28,7 +28,7 @@ Gitee（码云）是开源中国（OSChina）于2013年推出的**基于Git的�
 
 这里lz以【私有】为例
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/edce4341e95f.webp)
+![新建仓库](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/新建仓库.webp)
 
 创建好仓库后，点击【初始化readme文件】按钮，这样可以确保仓库里至少有一个文件
 
@@ -44,13 +44,13 @@ Gitee（码云）是开源中国（OSChina）于2013年推出的**基于Git的�
 
 建好自己想要放笔记的文件夹后，在该文件夹内右键，选择在终端内打开，克隆刚才创建的仓库
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/1a021ffd8e55.webp)
+![克隆仓库](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/克隆仓库.webp)
 
 若是首次克隆Gitee的仓库，会提示你需要输入Gitee账户的用户名(Username)和密码(Password)
 
 现在就可以看到在当前路径下多了一个文件夹，这就是你的远程仓库
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/11d597d05ce7.webp)
+![远程仓库](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/远程仓库.webp)
 
 接下来将你的Obsidian仓库都粘贴进该文件夹（**一定要做好数据备份啊，以防不测...** ）
 
@@ -62,7 +62,7 @@ Gitee（码云）是开源中国（OSChina）于2013年推出的**基于Git的�
 
 关闭安全模式后浏览社区插件市场
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/1a607864571b.webp)
+![Obsidian插件市场](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/Obsidian插件市场.webp)
 
 在插件市场中直接搜索Git，找到并安装并启用，确保Git已经启用后
 
@@ -70,15 +70,15 @@ Gitee（码云）是开源中国（OSChina）于2013年推出的**基于Git的�
 
 在修改文件1分钟内都没有操作后，自动提交并同步：
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/4c8aceee97d0.webp)
+![git插件设置](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/git插件设置.webp)
 
 每次启动obsidian时自动拉取仓库：
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/75285924cf84.webp)
+![git插件设置](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/git插件设置2.webp)
 
 这样就可以自动推送/拉取仓库了，若想要手动操作，也可以在左侧功能区中点击【打开Git源代码管理】按钮
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/b91230e8d00a.webp)
+![git插件位置](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/git插件位置.webp)
 
 这样右侧就会出现【源代码管理】窗口，从左往右可执行的操作分别为：
 
@@ -101,7 +101,7 @@ Tip：Git第一次同步时会要求你在**顶部** 输入Gitee的用户名和�
 
 
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/82b23544392c.webp)
+![gitignore配置](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/gitignore配置.webp)
 
 **workspace.json** 推荐忽略掉，该文件记录的是工作区的状态等，没有必要上传云端
 
@@ -111,69 +111,69 @@ Tip：Git第一次同步时会要求你在**顶部** 输入Gitee的用户名和�
 
 虽然手机端也可以直接用Obsidian内的Git插件，但该插件对移动端**兼容非常差** ，Git插件的作者也建议移动端使用GitSync方案
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/59b0dbcfb5e0.webp)
+![git插件移动端](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/git插件移动端.webp)
 
 GitSync也是GitHub中开源的项目（GitHub&作者真是太伟大了），可以在Release界面下载最新安装包（一般来说下**arm64** 版本）。如果手机上有GooglePlay应用商店，也可以直接在里面搜GitSync下载安装
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/143902e2e6fb.webp)
+![GitSync软件下载](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/GitSync软件下载.webp)
 
  打开GitSync后，先点这个认证按钮（你们的认证按钮应该是❌️号），这是为了绑定Git托管平台账号，方便以后同步
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/700bd5bff603.webp)
+![GitSync配置账户](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/GitSync配置账户.webp)
 
 但该软件支持的Git托管平台只有下面这四个，不过不用担心，对于任何一个Git托管平台，都一定支持Git协议的这两种认证方式，下面我以**HTTPS** 认证为例
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/31fadb95c1de.webp)
+![Git协议选择](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/Git协议选择.webp)
 
 ## Gitee私人令牌（HTTPS）获取
 
 首先打开Gitee的设置
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/72677582ddb8.webp)
+![Gitee设置](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/Gitee设置.webp)
 
 在安全设置中找到【私人令牌】
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/6b367e728c56.webp)
+![Gitee私人令牌](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/Gitee私人令牌.webp)
 
 点击【生成新令牌】
 
 填写你的令牌描述和过期时间
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/2b8dedb7b1b9.webp)
+![Gitee私人令牌权限](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/Gitee私人令牌权限.webp)
 
 最后点击【提交】，会让你输入Gitee账号的密码，完成后弹出生成好的令牌，此时**千万不要忘记复制** ，因为关闭该界面后就再也看不见了（如果你真的忘了复制....就删掉这个令牌重新生成一个吧）。
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/bba8c04de825.webp)
+![私人令牌只有一次显示机会](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/私人令牌只有一次显示机会.webp)
 
 注意：千万不要让别人知道你的令牌！！！**令牌的含金量就相当于你账户的密码！！**
 
 接下来在手机端的GitSync中的HTTPS认证里填入你的令牌，用户最好写你的Gitee英文名（你的个人空间地址的那个名）
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/6cd40a742515.webp)
+![GitSync中私人令牌填入地]image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/GitSync中私人令牌填入地.webp)
 
 点击登录后会让你填写要克隆的仓库，仓库地址为你仓库主界面的网址
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/825588b4e8c1.webp)
+![GitSync中克隆仓库地址填入地](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/GitSync中克隆仓库地址填入地.webp)
 
 粘贴好地址后，点击【克隆】（后面加不加.git都一样，只不过加上更标准）
 
 克隆完成后，界面差不多是这个样子，若不是，可以在【立即同步】右边的设置中从**客户端模式** 调为**同步模式** （更小白）
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/adf17df7721c.webp)
+![GitSync同步方法](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/GitSync同步方法.webp)
 
 一样的，第一次同步时会要求你输入Username和邮箱
 
 为了自动化，可以设置成自动同步，在下面的应用同步设置中开启【应用打开时同步】和【应用关闭时同步】，并添加应用Obsidian（需要**无障碍权限** ）
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/5a449bdb71cb.webp)
+![GitSync中设置打开Obsidian自动同步](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/GitSync中设置打开Obsidian自动同步.webp)
 
 在【立即同步】右侧的设置中也可以修改.gitignore文件：
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/062e3988106b.webp)
+![GitSync中gitignore设置](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/GitSync中gitignore设置.webp)
 
 需要注意的是，由于同步后手机端的Obsidian也会有Git插件，需要在Git插件设置的最底部开启此选项
 
-![](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/3a9d7c0985f8.webp)
+![在移动端禁用Git插件](image/Obsidian笔记PCAndroid同步方案--GiteeGitHub_20261009205414/在移动端禁用Git插件.webp)
 
 \--------------------------------------------------
 
